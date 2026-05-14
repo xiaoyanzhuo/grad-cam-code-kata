@@ -28,7 +28,7 @@ python3.10 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
 pip install torch==2.2.2 torchvision==0.17.2 --index-url https://download.pytorch.org/whl/cpu
-pip install -r requirements-py310.txt
+pip install --only-binary=:all: -r requirements-py310.txt
 python -m ipykernel install --user --name grad-cam-code-kata --display-name "Python (grad-cam-code-kata)"
 ```
 
@@ -40,17 +40,20 @@ python3.10 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
 pip install torch==2.2.2 torchvision==0.17.2 --index-url https://download.pytorch.org/whl/cpu
-pip install -r requirements-py310.txt
+pip install --only-binary=:all: -r requirements-py310.txt
 python -m ipykernel install --user --name grad-cam-code-kata --display-name "Python (grad-cam-code-kata)"
 ```
 
 The notebook and script run on CPU by default; no GPU or CUDA setup is required.
 
-If Python 3.10 still tries to build a package with `meson-python`, force binary wheels:
+If Python 3.10 still tries to build `contourpy` with `meson-python`, install the pinned wheel first:
 
 ```bash
+pip install --only-binary=:all: contourpy==1.2.1
 pip install --only-binary=:all: -r requirements-py310.txt
 ```
+
+`contourpy==1.2.1` has CPython 3.10 wheels on PyPI for common Linux/macOS/Windows platforms. If pip still tries to build from source, the machine may be using an unsupported platform tag or an old pip. Run `python -m pip install --upgrade pip setuptools wheel` and retry.
 
 The Python 3.10 requirements intentionally do not install `notebook`; they only install the packages needed by the Grad-CAM kernel. You can open Jupyter from an existing Anaconda/Jupyter install and select the `Python (grad-cam-code-kata)` kernel.
 

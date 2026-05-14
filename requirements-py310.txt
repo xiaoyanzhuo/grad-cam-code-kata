@@ -4,6 +4,7 @@
 # Install torch/torchvision separately from the PyTorch CPU wheel index:
 # pip install torch==2.2.2 torchvision==0.17.2 --index-url https://download.pytorch.org/whl/cpu
 Pillow==10.4.0
-matplotlib==3.8.4
 numpy==1.26.4
+contourpy==1.2.1
+matplotlib==3.8.4
 ipykernel==6.29.5
