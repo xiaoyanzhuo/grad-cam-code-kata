@@ -46,6 +46,14 @@ python -m ipykernel install --user --name grad-cam-code-kata --display-name "Pyt
 
 The notebook and script run on CPU by default; no GPU or CUDA setup is required.
 
+If Python 3.10 still tries to build a package with `meson-python`, force binary wheels:
+
+```bash
+pip install --only-binary=:all: -r requirements-py310.txt
+```
+
+The Python 3.10 requirements intentionally do not install `notebook`; they only install the packages needed by the Grad-CAM kernel. You can open Jupyter from an existing Anaconda/Jupyter install and select the `Python (grad-cam-code-kata)` kernel.
+
 ## Run
 
 ```bash
