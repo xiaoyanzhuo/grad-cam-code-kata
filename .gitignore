@@ -3,3 +3,4 @@ __pycache__/
 .ipynb_checkpoints/
 .DS_Store
 anaconda_projects/
+model_checkpoints/

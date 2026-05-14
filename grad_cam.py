@@ -90,6 +90,20 @@ def save_result(original, heatmap, overlay, label, confidence, output_path):
     plt.close(fig)
 
 
+def build_model(weights_path=None):
+    weights = MobileNet_V2_Weights.DEFAULT
+
+    if weights_path is None:
+        model = mobilenet_v2(weights=weights)
+    else:
+        model = mobilenet_v2(weights=None)
+        checkpoint = torch.load(weights_path, map_location="cpu")
+        model.load_state_dict(checkpoint)
+
+    model.eval()
+    return model, weights
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="CPU-friendly Grad-CAM kata using MobileNetV2.")
     parser.add_argument(
@@ -101,6 +115,11 @@ def parse_args():
         "--output",
         default="outputs/grad_cam_result.png",
         help="Where to save the visualization.",
+    )
+    parser.add_argument(
+        "--weights-path",
+        default=None,
+        help="Optional local MobileNetV2 checkpoint path for offline machines.",
     )
     parser.add_argument(
         "--class-index",
@@ -123,12 +142,13 @@ def main():
     image_path = Path(args.image)
     if not image_path.is_absolute():
         image_path = script_dir / image_path
+    weights_path = Path(args.weights_path) if args.weights_path else None
+    if weights_path is not None and not weights_path.is_absolute():
+        weights_path = script_dir / weights_path
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    weights = MobileNet_V2_Weights.DEFAULT
-    model = mobilenet_v2(weights=weights)
-    model.eval()
+    model, weights = build_model(weights_path)
 
     original_image = load_image(image_path)
     preprocess = weights.transforms()

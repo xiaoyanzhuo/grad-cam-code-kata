@@ -78,6 +78,76 @@ Force Grad-CAM for a specific ImageNet class index:
 python grad_cam.py --image /path/to/image.jpg --class-index 281
 ```
 
+## Offline Model Checkpoint
+
+By default, `torchvision` downloads the MobileNetV2 ImageNet checkpoint the first time the model is used. If the target machine cannot download it, download the file on another machine:
+
+[mobilenet_v2-7ebf99e0.pth](https://download.pytorch.org/models/mobilenet_v2-7ebf99e0.pth)
+
+Then copy it to the target machine, for example:
+
+```text
+model_checkpoints/mobilenet_v2-7ebf99e0.pth
+```
+
+The `model_checkpoints/` folder is ignored by git so large checkpoint files are not committed.
+
+Run the script with the local checkpoint:
+
+```bash
+python grad_cam.py \
+  --weights-path model_checkpoints/mobilenet_v2-7ebf99e0.pth \
+  --image sample_images/idea-wall-short-v2.png
+```
+
+In the notebook, set:
+
+```python
+local_weights_path = notebook_dir / "model_checkpoints" / "mobilenet_v2-7ebf99e0.pth"
+```
+
+If `local_weights_path` is `None`, the notebook uses the normal `torchvision` download/cache behavior.
+
+## Using A Different Model
+
+This kata currently uses MobileNetV2:
+
+```python
+from torchvision.models import MobileNet_V2_Weights, mobilenet_v2
+
+weights = MobileNet_V2_Weights.DEFAULT
+model = mobilenet_v2(weights=weights)
+target_layer = model.features[-1]
+```
+
+To use another `torchvision` classifier, update four things:
+
+1. Import the model builder and weights enum.
+2. Build the model with either `weights=...` or `weights=None` plus `load_state_dict(...)`.
+3. Use that model's preprocessing transforms from `weights.transforms()`.
+4. Choose the final convolution layer for Grad-CAM.
+
+Example with ResNet18:
+
+```python
+from torchvision.models import ResNet18_Weights, resnet18
+
+weights = ResNet18_Weights.DEFAULT
+model = resnet18(weights=weights)
+target_layer = model.layer4[-1]
+```
+
+If using a local ResNet18 checkpoint:
+
+```python
+model = resnet18(weights=None)
+checkpoint = torch.load("model_checkpoints/resnet18-f37072fd.pth", map_location="cpu")
+model.load_state_dict(checkpoint)
+target_layer = model.layer4[-1]
+```
+
+The model checkpoint must match the model architecture. A MobileNetV2 checkpoint cannot be loaded into ResNet18, and a custom fine-tuned model may need a different class-label list.
+
 ## Notebook Demo
 
 For a step-by-step sharing session with inline results:
