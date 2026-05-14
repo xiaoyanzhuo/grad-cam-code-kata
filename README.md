@@ -33,6 +33,20 @@ pip install -r requirements-py310.txt
 python -m ipykernel install --user --name grad-cam-code-kata --display-name "Python (grad-cam-code-kata)"
 ```
 
+For a CPU-only machine, install the CPU PyTorch wheels first:
+
+```bash
+cd /Users/xiaoyanzhuo/Documents/grad-cam-code-kata
+python3.10 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install torch==2.2.2 torchvision==0.17.2 --index-url https://download.pytorch.org/whl/cpu
+pip install -r requirements-common.txt
+python -m ipykernel install --user --name grad-cam-code-kata --display-name "Python (grad-cam-code-kata)"
+```
+
+The notebook and script run on CPU by default; no GPU or CUDA setup is required.
+
 ## Run
 
 ```bash
