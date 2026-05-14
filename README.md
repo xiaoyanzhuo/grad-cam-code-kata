@@ -4,6 +4,14 @@ This kata shows how Grad-CAM can explain which image regions most influenced a C
 
 It is designed to run on CPU. The first run downloads MobileNetV2 ImageNet weights through `torchvision`; later runs reuse the local cache.
 
+## Python Version
+
+This project was originally created with Python 3.12.4. If you are using Python 3.10, install the pinned Python 3.10 requirements instead of the default unpinned file:
+
+```bash
+pip install -r requirements-py310.txt
+```
+
 ## Setup
 
 ```bash
@@ -11,6 +19,17 @@ cd /Users/xiaoyanzhuo/Documents/grad-cam-code-kata
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+python -m ipykernel install --user --name grad-cam-code-kata --display-name "Python (grad-cam-code-kata)"
+```
+
+For Python 3.10:
+
+```bash
+cd /Users/xiaoyanzhuo/Documents/grad-cam-code-kata
+python3.10 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements-py310.txt
 python -m ipykernel install --user --name grad-cam-code-kata --display-name "Python (grad-cam-code-kata)"
 ```
 
