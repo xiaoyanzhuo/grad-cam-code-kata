@@ -6,11 +6,9 @@ It is designed to run on CPU. The first run downloads MobileNetV2 ImageNet weigh
 
 ## Python Version
 
-This project was originally created with Python 3.12.4. If you are using Python 3.10, install the pinned Python 3.10 requirements instead of the default unpinned file:
+This project was originally created with Python 3.12.4. If you are using Python 3.10, use the CPU-only setup below.
 
-```bash
-pip install -r requirements-py310.txt
-```
+On Linux, installing `torch` from the default PyPI index may download NVIDIA CUDA-related packages. This project does not need them. Use the PyTorch CPU wheel index instead.
 
 ## Setup
 
@@ -29,11 +27,12 @@ cd /Users/xiaoyanzhuo/Documents/grad-cam-code-kata
 python3.10 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
+pip install torch==2.2.2 torchvision==0.17.2 --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements-py310.txt
 python -m ipykernel install --user --name grad-cam-code-kata --display-name "Python (grad-cam-code-kata)"
 ```
 
-For a CPU-only machine, install the CPU PyTorch wheels first:
+For a CPU-only machine, use the same setup:
 
 ```bash
 cd /Users/xiaoyanzhuo/Documents/grad-cam-code-kata
@@ -41,7 +40,7 @@ python3.10 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
 pip install torch==2.2.2 torchvision==0.17.2 --index-url https://download.pytorch.org/whl/cpu
-pip install -r requirements-common.txt
+pip install -r requirements-py310.txt
 python -m ipykernel install --user --name grad-cam-code-kata --display-name "Python (grad-cam-code-kata)"
 ```
 
